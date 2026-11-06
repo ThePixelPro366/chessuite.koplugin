@@ -1,0 +1,5 @@
+Maia3 5M by the University of Toronto CSSLab.
+Code: https://github.com/CSSLab/maia3 (AGPL-3.0); tools/maia3/maia3.c is a C port of its inference.
+Weights: https://huggingface.co/UofTCSSLab/Maia3-5M (maia3-5m.pt), converted to half precision
+with tools/export-maia3.py into maia3-5m.bin.
+Paper: Chessformer: A Unified Architecture for Chess Modeling, https://arxiv.org/abs/2605.19091
