@@ -148,8 +148,9 @@ Thanks to the Lichess team for their free and open chess platform and API.
 ## Development
 
 Build the release zip (needs `zip`): `sh tools/package.sh` writes `chessuite.koplugin-<version>.zip`
-with only the files the device needs. The version lives in `_meta.lua`. Pushing a tag `v<version>`
-makes GitHub Actions build the zip and publish a release with it and the companion APK.
+with only the files the device needs. The version lives in `_meta.lua`. Running the *Release*
+workflow in GitHub Actions (or pushing a tag `v<version>`) builds the zip and publishes a release
+with it and the companion APK.
 
 Run the tests from the plugin folder with LuaJIT:
 
