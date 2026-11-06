@@ -40,7 +40,7 @@ Chessuite is an unofficial plugin. It is not affiliated with or endorsed by Lich
 - **My progress**: your rating chart, results with White and Black, puzzle and training records.
 - **Your Lichess games**: load your last games from lichess.org and review them.
 - **Lichess computer analysis** of your games (optional, experimental) through the small Android
-  [companion app](companion/README.md), see below.
+  [companion app](#companion-app-android-optional).
 
 Stockfish 11 and a C port of Maia3 (5M) are bundled as static binaries for ARMv7 (Kobo,
 Kindle, PocketBook, ...), AArch64 and x86-64 (desktop KOReader).
@@ -78,14 +78,38 @@ Open *Lichess account* and scan the QR code with your phone. It opens Lichess wi
 type it in, or save it as `lichess_token.txt` in the KOReader folder and tap *Load from file*.
 The token is stored on your e-reader only and is never written to the log.
 
-### Lichess computer analysis (experimental)
+## Companion app (Android, optional)
 
-The Lichess API has no way to request a server analysis, so this uses your Lichess
-*website* login instead: the [companion app](companion/README.md) lets you log in to
-lichess.org on your phone and passes that login to the e-reader over your local Wi-Fi.
+Chessuite Companion is a tiny Android app that lets Lichess run its **server computer analysis**
+on your games. The Lichess API has no way to request that analysis, so the app lets you log in to
+the Lichess *website* on your phone and passes that login to your e-reader over your local Wi-Fi.
 Chessuite then presses "Request computer analysis" for you, the way the website does.
-This is not an official Lichess API; use it at your own discretion. You can remove the
-login at any time with *Forget phone login*. Everything else in Chessuite works without it.
+
+You don't need it for anything else: bots, the coach, puzzles, openings and the local Stockfish
+analysis all work without it.
+
+**Install and connect**
+
+1. Put the e-reader and the phone on the same Wi-Fi.
+2. On the e-reader: *Chessuite → Lichess account → Connect phone for Lichess analysis*.
+3. Scan the QR code with the phone camera. If the app is not installed yet, the page offers
+   it for download, served straight from your e-reader. You can also get
+   `chessuite-companion.apk` from the
+   [Releases](https://github.com/ThePixelPro366/chessuite.koplugin/releases) page. Allow
+   installing apps from this source when Android asks.
+4. Tap *Open in Chessuite Companion* and log in to Lichess in the app. The e-reader checks
+   the one-time code, stores the login and stops listening.
+
+**Privacy and caveats**
+
+- The login only travels over your local network, to the e-reader that showed the code, and
+  is stored in Chessuite's settings. *Forget phone login* removes it.
+- This is an unofficial helper and not an official Lichess API. It is not affiliated with
+  Lichess; use it at your own discretion.
+- The app is signed with a public debug key (so that rebuilt APKs install as updates). Only
+  install the APK from this repository or from your own e-reader.
+
+More details and build instructions: [companion/README.md](companion/README.md).
 
 ## Credits and licenses
 
@@ -124,7 +148,8 @@ Thanks to the Lichess team for their free and open chess platform and API.
 ## Development
 
 Build the release zip (needs `zip`): `sh tools/package.sh` writes `chessuite.koplugin-<version>.zip`
-with only the files the device needs. The version lives in `_meta.lua`.
+with only the files the device needs. The version lives in `_meta.lua`. Pushing a tag `v<version>`
+makes GitHub Actions build the zip and publish a release with it and the companion APK.
 
 Run the tests from the plugin folder with LuaJIT:
 

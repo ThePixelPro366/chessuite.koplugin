@@ -1,0 +1,42 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check the tag matches _meta.lua
+        run: |
+          version=$(sed -n 's/^ *version *= *"\(.*\)".*/\1/p' _meta.lua)
+          test "v$version" = "$GITHUB_REF_NAME"
+      - name: Build the plugin zip
+        run: sh tools/package.sh
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          cp companion/chessuite-companion.apk chessuite-companion.apk
+          cat > notes.md <<NOTES
+          ## Chessuite $version
+
+          **Install:** download \`chessuite.koplugin-$version.zip\`, unzip it and copy the
+          \`chessuite.koplugin\` folder into KOReader's \`plugins\` folder, then restart KOReader
+          and open **Tools → Chess (Chessuite)**. See the README for device paths.
+
+          **Companion app (optional, Android):** \`chessuite-companion.apk\` lets Lichess run its
+          server computer analysis on your games. You can also install it from the e-reader via
+          *Lichess account → Connect phone for Lichess analysis*.
+
+          Stockfish 11 and Maia3 are bundled for ARMv7, AArch64 and x86-64.
+          NOTES
+          gh release create "$GITHUB_REF_NAME" \
+            "chessuite.koplugin-$version.zip" chessuite-companion.apk \
+            --title "Chessuite $version" --notes-file notes.md
